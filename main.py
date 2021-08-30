@@ -22,24 +22,29 @@ def stockCheck(res):
 
     return True
 
+
 # main script
 if __name__ == "__main__":
-    #이학훈, 김민영, 이재익, 김병지, 손지훈, 김동훈, 최진우
-    hakhunlee = 1465659915
-    minyoungkim = 1760572904
-    jaeiklee = 1874234225
-    byungjikim = 1657705070
-    jihoonson = 1530113968
-    donghoonkim = 1908154690
-    jinwoochoi = 1373332792
+    peopleDict = {
+        '이학훈': 1465659915,
+        '김민영': 1760572904,
+        '이재익': 1874234225,
+        '김병지': 1657705070,
+        '손지훈': 1530113968,
+        '김동훈': 1908154690,
+        '최진우': 1373332792
+    }
 
-    #Date
+    # Date
+    # defaultDate = datetime
     dateList = [20210925, 20211002, 20211009, 20211016, 20211023, 20211030]
     zelKova = 1202918454
     zelKovaRoomList = [
-        3905136, 3903078, 3903080, 3903083, 3903090, 3903430, 3903444, 3903446, 3903448, 3903450, 3903451, 3903452, 3903453, 3903465, 3903466, #A
-        3903520, 3903527, 3903524, 3903528, 3903529, #B
-        3903480, 3903497, 3903502, 3903504, 3903506, 3903507, 3903509, 3903511, 3903514, 3903515, 3903517, 3903518, 3903519 #C
+        3905136, 3903078, 3903080, 3903083, 3903090, 3903430, 3903444, 3903446, 3903448, 3903450, 3903451, 3903452,
+        3903453, 3903465, 3903466,  # A
+        3903520, 3903527, 3903524, 3903528, 3903529,  # B
+        3903480, 3903497, 3903502, 3903504, 3903506, 3903507, 3903509, 3903511, 3903514, 3903515, 3903517, 3903518,
+        3903519  # C
     ]
 
     helinoxCotOneTan = "http://www.helinoxstore.co.kr/shop/shopdetail.html?branduid=3546518&xcode=003&mcode=006&scode=&type=X&sort=manual&cur_code=003006&GfDT=bmx7W10%3D"
@@ -48,10 +53,14 @@ if __name__ == "__main__":
 
     for date in dateList:
         for zelKovaRoom in zelKovaRoomList:
-            urlList.append("https://pcmap.place.naver.com/accommodation/" + str(zelKova) + "/room/" + str(zelKovaRoom) + "?from=map&fromPanelNum=1&ts=1629963438648&checkin=" + str(date) + "&checkout=" + str(date + 1) + "&guest=2")
+            urlList.append("https://pcmap.place.naver.com/accommodation/" + str(zelKova) + "/room/" + str(
+                zelKovaRoom) + "?from=map&fromPanelNum=1&ts=1629963438648&checkin=" + str(date) + "&checkout=" + str(
+                date + 1) + "&guest=2")
 
-    userList = [hakhunlee, byungjikim, minyoungkim]
-    # userList = [hakhunlee]
+    userList = []
+    userList.append(peopleDict['이학훈'])
+    userList.append(peopleDict['김민영'])
+    userList.append(peopleDict['김병지'])
 
     bot = TelegramBot(config['TELEGRAM']['TOKEN'])
 
@@ -60,8 +69,6 @@ if __name__ == "__main__":
     for user in userList:
         bot.sendMessage(user, "안녕하세요 젤코바 캠핑장 주말 모니터링 시작합니다!")
         bot.sendMessage(user, str(dateList[0]) + " ~ " + str(dateList[-1]) + " 모니터링 합니다.")
-        # for url in urlList:
-        #     bot.sendMessage(user, "우리가 사야할 물품 링크에요. " + url)
 
     stockPerkList = []
     for idx, url in enumerate(urlList):
@@ -80,7 +87,7 @@ if __name__ == "__main__":
         for idx, stockPerk in enumerate(stockPerkList):
             returns = check([stockPerk])
 
-            print("check[%03d] : %s"%(idx + 1, stockPerk.url))
+            print("check[%03d] : %s" % (idx + 1, stockPerk.url))
 
             alerts = list(filter(lambda item: item[0], returns))
 
